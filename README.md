@@ -43,7 +43,7 @@ Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb25hbGQiLCJleHAiOjE1MzU2NjEyNjR9.eESH592
 **Body**  
 
 ```json
-{"username": "donald", "password": "trump"}
+{"usernameOrEmail": "donald", "password": "trump"}
 ```
 In case of successful login the next reply will be received: 
 ```json

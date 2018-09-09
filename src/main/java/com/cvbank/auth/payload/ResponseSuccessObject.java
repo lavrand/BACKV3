@@ -11,8 +11,8 @@ public class ResponseSuccessObject extends Response {
 
     private Object data;
 
-    public ResponseSuccessObject(Object data) {
-        super(Response.SUCCESS,null,null);
+    public ResponseSuccessObject(Object data, String message) {
+        super(Response.SUCCESS,null,message);
         this.data = data;
     }
 }

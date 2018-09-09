@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class AuthController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -49,37 +49,34 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        Optional<Profile> profile = profileRepository.findByUsernameOrEmail(loginRequest.getUsernameOrEmail(),loginRequest.getUsernameOrEmail());
+        Optional<Profile> profile = profileRepository.findByUsernameOrEmail(loginRequest.getUsernameOrEmail(), loginRequest.getUsernameOrEmail());
 
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseSuccessObject(new LoginResponse(profile, jwt)));
+                .body(new ResponseSuccessObject(new LoginResponse(profile, jwt), "You have successfully logged in"));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(profileRepository.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody Profile profile) {
+        if (profileRepository.existsByUsername(profile.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(profileRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (profileRepository.existsByEmail(profile.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Creating profile's account
-        Profile profile = new Profile(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getUsertype());
+        // Creating profile
 
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
 
         Profile result = profileRepository.save(profile);
+        SignUpResponse dataResponse = new SignUpResponse(result.getId().toString(), result.getUsername(), result.getUsertype());
+        ResponseSuccessObject resp = new ResponseSuccessObject(dataResponse, "Profile registered successfully");
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/profile/{username}")
-                .buildAndExpand(result.getUsername()).toUri();
+        return new ResponseEntity<>(resp, HttpStatus.CREATED);
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "Profile registered successfully"));
     }
 }

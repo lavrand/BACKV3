@@ -40,7 +40,7 @@ public class ProfilePrincipal implements UserDetails {
 
         return new ProfilePrincipal(
                 profile.getId(),
-                profile.getName(),
+                profile.getFirstName(),
                 profile.getUsername(),
                 profile.getEmail(),
                 profile.getPassword(),

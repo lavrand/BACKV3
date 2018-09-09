@@ -1,6 +1,8 @@
 package com.cvbank.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
@@ -14,25 +16,23 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "profile", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-            "username"
+                "username"
         }),
         @UniqueConstraint(columnNames = {
-            "email"
+                "email"
         })
 })
 @Data
 @NoArgsConstructor
+//@JsonInclude(JsonInclude.Include.NON_NULL) - если возвращать только Non null поля
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id", nullable = false)
     private Long id;
 
     @NotBlank
     @Size(max = 40)
-    private String name;
-
-    @NotBlank
-    @Size(max = 15)
     private String username;
 
     @NaturalId
@@ -43,18 +43,23 @@ public class Profile {
 
     @NotBlank
     @Size(max = 100)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @NotBlank
     @Size(max = 100)
     private String usertype;
 
-    public Profile(String name, String username, String email, String password, String usertype) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.usertype = usertype;
-    }
+    private String phone;
+    private String lastName;
+    private String firstName;
+    private String companyName;
+    private String website;
+    private String country;
+    private String cityTown;
+    private String street;
+    private String houseBuilding;
+    private String postcode;
+
+
 }

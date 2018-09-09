@@ -1,6 +1,6 @@
 package com.cvbank.auth.security;
 
-import com.cvbank.auth.model.User;
+import com.cvbank.auth.model.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-public class UserPrincipal implements UserDetails {
+public class ProfilePrincipal implements UserDetails {
     private Long id;
 
     private String name;
@@ -23,7 +23,7 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public ProfilePrincipal(Long id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -32,18 +32,18 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(User user) {
+    public static ProfilePrincipal create(Profile profile) {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        authorities.add(new SimpleGrantedAuthority(profile.getUsertype()));
 
 
 
-        return new UserPrincipal(
-                user.getId(),
-                user.getName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword(),
+        return new ProfilePrincipal(
+                profile.getId(),
+                profile.getName(),
+                profile.getUsername(),
+                profile.getEmail(),
+                profile.getPassword(),
                 authorities
         );
     }
@@ -99,7 +99,7 @@ public class UserPrincipal implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserPrincipal that = (UserPrincipal) o;
+        ProfilePrincipal that = (ProfilePrincipal) o;
         return Objects.equals(id, that.id);
     }
 

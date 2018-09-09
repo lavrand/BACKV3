@@ -1,8 +1,8 @@
 package com.cvbank.auth.security;
 
 import com.cvbank.auth.exception.ResourceNotFoundException;
-import com.cvbank.auth.model.User;
-import com.cvbank.auth.repository.UserRepository;
+import com.cvbank.auth.model.Profile;
+import com.cvbank.auth.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,27 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    ProfileRepository profileRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail)
             throws UsernameNotFoundException {
         // Let people login with either username or email
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+        Profile profile = profileRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail)
+                        new UsernameNotFoundException("Profile not found with username or email : " + usernameOrEmail)
         );
 
-        return UserPrincipal.create(user);
+        return ProfilePrincipal.create(profile);
     }
 
     @Transactional
     public UserDetails loadUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("User", "id", id)
+        Profile profile = profileRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Profile", "id", id)
         );
 
-        return UserPrincipal.create(user);
+        return ProfilePrincipal.create(profile);
     }
 }

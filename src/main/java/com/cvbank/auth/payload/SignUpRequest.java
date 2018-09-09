@@ -28,7 +28,7 @@ public class SignUpRequest {
 
     @NotBlank
     @Size(min = 7, max = 10)
-    private String role;
+    private String usertype;
 
 
 }

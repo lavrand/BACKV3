@@ -1,20 +1,18 @@
 package com.cvbank.auth.model;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "profile", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
             "username"
         }),
@@ -24,7 +22,7 @@ import java.util.Set;
 })
 @Data
 @NoArgsConstructor
-public class User {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,17 +43,18 @@ public class User {
 
     @NotBlank
     @Size(max = 100)
+    @JsonIgnore
     private String password;
 
     @NotBlank
     @Size(max = 100)
-    private String role;
+    private String usertype;
 
-    public User(String name, String username, String email, String password, String role) {
+    public Profile(String name, String username, String email, String password, String usertype) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.usertype = usertype;
     }
 }

@@ -1,10 +1,8 @@
 package com.cvbank.auth.controller;
 
-import com.cvbank.auth.model.User;
-import com.cvbank.auth.payload.ApiResponse;
-import com.cvbank.auth.payload.LoginRequest;
-import com.cvbank.auth.payload.SignUpRequest;
-import com.cvbank.auth.repository.UserRepository;
+import com.cvbank.auth.model.Profile;
+import com.cvbank.auth.payload.*;
+import com.cvbank.auth.repository.ProfileRepository;
 import com.cvbank.auth.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +30,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    ProfileRepository profileRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -51,37 +49,37 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        Optional<User> user = userRepository.findByUsernameOrEmail(loginRequest.getUsernameOrEmail(),loginRequest.getUsernameOrEmail());
+        Optional<Profile> profile = profileRepository.findByUsernameOrEmail(loginRequest.getUsernameOrEmail(),loginRequest.getUsernameOrEmail());
 
         String jwt = tokenProvider.generateToken(authentication);
-        System.out.println(jwt);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseSuccessObject(new LoginResponse(profile, jwt)));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if(profileRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if(profileRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getRole());
+        // Creating profile's account
+        Profile profile = new Profile(signUpRequest.getName(), signUpRequest.getUsername(),
+                signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getUsertype());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        profile.setPassword(passwordEncoder.encode(profile.getPassword()));
 
-        User result = userRepository.save(user);
+        Profile result = profileRepository.save(profile);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/users/{username}")
+                .fromCurrentContextPath().path("/profile/{username}")
                 .buildAndExpand(result.getUsername()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.created(location).body(new ApiResponse(true, "Profile registered successfully"));
     }
 }

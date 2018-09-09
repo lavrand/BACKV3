@@ -1,11 +1,10 @@
 package com.cvbank.auth.controller;
 
-import com.cvbank.auth.repository.UserRepository;
 import com.cvbank.auth.model.User;
 import com.cvbank.auth.payload.ApiResponse;
-import com.cvbank.auth.payload.JwtAuthenticationResponse;
 import com.cvbank.auth.payload.LoginRequest;
 import com.cvbank.auth.payload.SignUpRequest;
+import com.cvbank.auth.repository.UserRepository;
 import com.cvbank.auth.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

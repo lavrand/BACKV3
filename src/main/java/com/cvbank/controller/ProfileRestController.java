@@ -28,7 +28,7 @@ public class ProfileRestController {
 
         if (!profile.isPresent()) {
             ResponseError response = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + id);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(new ResponseSuccessObject(profile), HttpStatus.OK);
@@ -41,8 +41,8 @@ public class ProfileRestController {
         Optional<Profile> tempProfile = profileRepository.findById(id);
 
         if (!tempProfile.isPresent()) {
-            ResponseError resp = new ResponseError(2, Profile.class.getSimpleName() + " id not found - " + profile.getId());
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            ResponseError resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + profile.getId());
+            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
         }
 
         profile.setId(id);
@@ -67,7 +67,7 @@ public class ProfileRestController {
             return new ResponseEntity(resp, HttpStatus.OK);
         }
 
-        ResponseError resp = new ResponseError(3, Profile.class.getSimpleName() + " id not found - " + id);
+        ResponseError resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + id);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

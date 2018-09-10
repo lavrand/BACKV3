@@ -131,7 +131,7 @@ public class CVRestController {
 
         if (!cv.isPresent()) {
             ResponseError resp = new ResponseError(1, CV.class.getSimpleName() + " id not found - " + id);
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
         }
 
         ResponseSuccessObject resp = new ResponseSuccessObject(cv.get());
@@ -147,7 +147,7 @@ public class CVRestController {
 
         if (!tempCV.isPresent()) {
             ResponseError resp = new ResponseError(2, CV.class.getSimpleName() + " id not found - " + cv.getId());
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
         }
 
         cv.setId(id);
@@ -195,7 +195,7 @@ public class CVRestController {
         }
 
         ResponseError resp = new ResponseError(3, CV.class.getSimpleName() + " id not found - " + id);
-        return new ResponseEntity<>(resp, HttpStatus.OK);
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 }
 

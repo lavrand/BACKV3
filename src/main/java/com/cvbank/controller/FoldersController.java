@@ -6,6 +6,7 @@ import com.cvbank.repository.FolderRepository;
 import com.cvbank.repository.ProfileRepository;
 import com.cvbank.response.Response;
 import com.cvbank.response.ResponseError;
+import com.cvbank.response.ResponseSuccessEmpty;
 import com.cvbank.response.ResponseSuccessList;
 import com.cvbank.response.ResponseSuccessObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,16 +78,47 @@ public class FoldersController {
 
         Folder newFolder = new Folder();
         folder.setId(null);
-       // folder.setProfile(profile);
         folder.setProfileId(profile.getId());
         newFolder = folder;
 
         folderRepository.save(newFolder);
 
-       // List<FolderProfile> folderProfile = folder.getProfile();
-
-
         Optional<Folder> folderResponse = folderRepository.findById(newFolder.getId());
         return new ResponseEntity(new ResponseSuccessObject(folderResponse.get()), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/folders/{id}")
+    @Transactional
+    public ResponseEntity<?> updateFolder(@RequestBody Folder folder, @PathVariable Long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Profile profile = profileRepository.findByUsername(username);
+
+        Optional<Folder> tempFolder = folderRepository.findById(id);
+
+        if (!tempFolder.isPresent()) {
+            ResponseError resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + folder.getId());
+            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+        }
+        folder.setId(id);
+        folder.setProfileId(profile.getId());
+        folderRepository.save(folder);
+
+        Optional<Folder> responseFolder = folderRepository.findById(id);
+        return new ResponseEntity(new ResponseSuccessObject(responseFolder), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/folders/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteFolder(@PathVariable Long id) {
+
+        Optional<Folder> folder = folderRepository.findById(id);
+        if (folder.isPresent()) {
+            folderRepository.deleteById(id);
+
+            return new ResponseEntity(new ResponseSuccessEmpty(), HttpStatus.OK);
+        }
+        ResponseError resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + id);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

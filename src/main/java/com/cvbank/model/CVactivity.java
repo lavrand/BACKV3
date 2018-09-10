@@ -40,12 +40,14 @@ public class CVactivity {
 	@Column(name = "back_front")
 	private int backFront;
 
+	@Column(name = "company", length = 255)
+	private String company;
+
     @JsonIgnore
     //@JsonManagedReference
     @ManyToOne
     @JoinColumn(name="cv_id")
     private CV cv;
-
 }
 
 

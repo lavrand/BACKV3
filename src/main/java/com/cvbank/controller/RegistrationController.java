@@ -4,9 +4,11 @@ import com.cvbank.model.Profile;
 import com.cvbank.repository.ProfileRepository;
 import com.cvbank.response.*;
 import com.cvbank.security.JwtTokenProvider;
+import com.cvbank.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,6 +37,10 @@ public class RegistrationController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+
+    @Autowired
+    NotificationService notificationService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -71,6 +77,11 @@ public class RegistrationController {
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
 
         Profile result = profileRepository.save(profile);
+        try {
+            notificationService.sendNotification(profile);
+        } catch (MailException e) {
+            System.out.println("Error sending mail " + e.getMessage());
+        }
         SignUpResponse dataResponse = new SignUpResponse(result.getId().toString(), result.getUsername(), result.getUsertype());
         ResponseSuccessObject resp = new ResponseSuccessObject(dataResponse);
 

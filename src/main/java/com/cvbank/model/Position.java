@@ -16,8 +16,9 @@ public class Position {
         private Long id;
 
         private String postName;
-
+/*
         @JsonIgnore
         @OneToMany(mappedBy = "positionPreference", orphanRemoval = true)
         private List<CV> cv;
+        */
 }

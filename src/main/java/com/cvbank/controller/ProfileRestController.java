@@ -46,6 +46,7 @@ public class ProfileRestController {
         }
 
         profile.setId(id);
+        profile.setPassword(profileRepository.findById(id).get().getPassword());
         profileRepository.save(profile);
 
 

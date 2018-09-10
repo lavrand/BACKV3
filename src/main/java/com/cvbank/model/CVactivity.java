@@ -20,13 +20,8 @@ public class CVactivity {
 	@Column(name = "activity_type_id", length = 255)
 	private Long activityTypeId;
 
-	//@Column(name = "position_id", length = 255)
-	private Long positionId;
-
- //   @JsonIgnore
-////	@OneToOne(cascade=CascadeType.ALL)
-//	@JoinColumn(name="position_preference_id")
-//	private Position position;
+	//@Column(name = "position", length = 255)
+	private String position;
 
 	@Column(name = "description", length = 255)
 	private String description;

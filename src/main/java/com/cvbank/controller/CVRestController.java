@@ -70,6 +70,8 @@ public class CVRestController {
             System.out.println(profileRepository.findByUsername(request.getUserPrincipal().getName()));
             Long l = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
 
+            CVRepository.findCVByProfileId(l);
+
             resp = new ResponseSuccessList(CVRepository.findCVByProfileId(l));
         } else {
             resp = new ResponseError(4, "ONLY" + Profile.Type.CANDIDATE.name() + " can access [GET] /api/cv");

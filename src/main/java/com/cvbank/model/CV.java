@@ -29,6 +29,7 @@ public class CV {
 	private String residence;
 	private Date birthday;
 	private String linkedin;
+	private String position_preference;
 	private String github;
 	private String recommendations;
 	private String title;
@@ -57,10 +58,6 @@ public class CV {
     @ManyToOne
     @JoinColumn(name="template_id")
     private Template template;
-
-    @ManyToOne
-    @JoinColumn(name="position_preference_id")
-    private Position positionPreference;
 
     @ManyToMany
     @JoinTable(

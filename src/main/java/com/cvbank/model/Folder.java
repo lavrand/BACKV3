@@ -18,21 +18,12 @@ public class Folder {
 
     private String nameFolder;
 
-    //@JsonIgnore
     @ManyToMany
     @JoinTable(
             name="folder_cv",
             joinColumns=@JoinColumn(name="folder_id", referencedColumnName="id"),
             inverseJoinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"))
     private List<CV> cv;
-
-  /*  @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name="folder_profile",
-            joinColumns=@JoinColumn(name="folder_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="profile_id", referencedColumnName="id"))
-    private List<Profile> profile;*/
 
     @JsonIgnore
     private Long profileId;

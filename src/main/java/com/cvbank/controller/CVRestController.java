@@ -21,7 +21,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CVRestController {
 
-
     @Autowired
     private ProfileRepository profileRepository;
 

@@ -10,6 +10,10 @@ import com.cvbank.response.ResponseSuccessEmpty;
 import com.cvbank.response.ResponseSuccessList;
 import com.cvbank.response.ResponseSuccessObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -35,9 +39,16 @@ public class FoldersController {
     public ResponseEntity getAllFoldersAndCVs(HttpServletRequest request) {
 
         List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        Long profileId = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
+        Response resp;
+        if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
 
-        Response resp = new ResponseSuccessList(folderRepository.findFolderByProfileId(profileId));
+            Long profileId = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
+            resp = new ResponseSuccessList(folderRepository.findFolderByProfileId(profileId));
+
+        } else {
+            resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [GET] /api/folders/cv");
+        }
+
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
@@ -45,27 +56,40 @@ public class FoldersController {
     public ResponseEntity getAllFolders(HttpServletRequest request) {
 
         List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        Long profileId = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
+        Response resp;
+        if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
 
-        List<Folder> folderList = folderRepository.findFolderByProfileId(profileId);
-        for (Folder folder : folderList) {
-            folder.setCv(null);
+            Long profileId = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
+
+            List<Folder> folderList = folderRepository.findFolderByProfileId(profileId);
+            for (Folder folder : folderList) {
+                folder.setCv(null);
+            }
+            resp = new ResponseSuccessList(folderList);
+        } else {
+            resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [GET] /api/folders.");
         }
 
-        return new ResponseEntity<>(new ResponseSuccessList(folderList), HttpStatus.OK);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @GetMapping("/folders/{id}")
     public ResponseEntity getFolder(@PathVariable Long id) {
+        List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        Response resp;
+        if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
 
-        Optional<Folder> folder = folderRepository.findById(id);
+            Optional<Folder> folder = folderRepository.findById(id);
 
-        if (!folder.isPresent()) {
-            ResponseError resp = new ResponseError(1, Folder.class.getSimpleName() + " id not found - " + id);
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            if (!folder.isPresent()) {
+                resp = new ResponseError(1, Folder.class.getSimpleName() + " id not found - " + id);
+                return new ResponseEntity<>(resp, HttpStatus.OK);
+            }
+            resp = new ResponseSuccessObject(folder.get());
+        } else {
+            resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [GET] /api/folders/{id}.");
         }
 
-        ResponseSuccessObject resp = new ResponseSuccessObject(folder.get());
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
@@ -73,52 +97,79 @@ public class FoldersController {
     @Transactional
     public ResponseEntity<?> createFolders(@RequestBody Folder folder) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Profile profile = profileRepository.findByUsername(username);
 
-        Folder newFolder = new Folder();
-        folder.setId(null);
-        folder.setProfileId(profile.getId());
-        newFolder = folder;
+        List roles = (List) auth.getAuthorities();
+        Response resp;
+        if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
 
-        folderRepository.save(newFolder);
 
-        Optional<Folder> folderResponse = folderRepository.findById(newFolder.getId());
-        return new ResponseEntity(new ResponseSuccessObject(folderResponse.get()), HttpStatus.CREATED);
+            String username = auth.getName();
+            Profile profile = profileRepository.findByUsername(username);
+
+            Folder newFolder = new Folder();
+            folder.setId(null);
+            folder.setProfileId(profile.getId());
+            newFolder = folder;
+
+            folderRepository.save(newFolder);
+
+            Optional<Folder> folderResponse = folderRepository.findById(newFolder.getId());
+            resp = new ResponseSuccessObject(folderResponse.get());
+        } else {
+            resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [POST] /api/folders.");
+        }
+        return new ResponseEntity(resp, HttpStatus.CREATED);
     }
 
     @PutMapping("/folders/{id}")
     @Transactional
     public ResponseEntity<?> updateFolder(@RequestBody Folder folder, @PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Profile profile = profileRepository.findByUsername(username);
 
-        Optional<Folder> tempFolder = folderRepository.findById(id);
+        List roles = (List) auth.getAuthorities();
+        Response resp;
+        if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
 
-        if (!tempFolder.isPresent()) {
-            ResponseError resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + folder.getId());
-            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+            String username = auth.getName();
+            Profile profile = profileRepository.findByUsername(username);
+
+            Optional<Folder> tempFolder = folderRepository.findById(id);
+
+            if (!tempFolder.isPresent()) {
+                resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + folder.getId());
+                return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+            }
+            folder.setId(id);
+            folder.setProfileId(profile.getId());
+            folderRepository.save(folder);
+
+            Optional<Folder> responseFolder = folderRepository.findById(id);
+            resp = new ResponseSuccessObject(responseFolder);
+        } else {
+            resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [PUT] /api/folders/{id}.");
         }
-        folder.setId(id);
-        folder.setProfileId(profile.getId());
-        folderRepository.save(folder);
 
-        Optional<Folder> responseFolder = folderRepository.findById(id);
-        return new ResponseEntity(new ResponseSuccessObject(responseFolder), HttpStatus.OK);
+        return new ResponseEntity(resp, HttpStatus.OK);
     }
 
     @DeleteMapping("/folders/{id}")
     @Transactional
     public ResponseEntity<?> deleteFolder(@PathVariable Long id) {
+        List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        Response resp;
 
-        Optional<Folder> folder = folderRepository.findById(id);
-        if (folder.isPresent()) {
-            folderRepository.deleteById(id);
+        if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
 
-            return new ResponseEntity(new ResponseSuccessEmpty(), HttpStatus.OK);
+            Optional<Folder> folder = folderRepository.findById(id);
+            if (folder.isPresent()) {
+                folderRepository.deleteById(id);
+
+                return new ResponseEntity(new ResponseSuccessEmpty(), HttpStatus.OK);
+            }
+            resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + id);
+        } else {
+            resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [DELETE] /api/folders/{id}.");
         }
-        ResponseError resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + id);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

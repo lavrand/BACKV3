@@ -4,6 +4,7 @@ import com.cvbank.model.CV;
 import com.cvbank.model.CVactivity;
 import com.cvbank.model.Folder;
 import com.cvbank.model.Profile;
+import com.cvbank.repository.CVRepository;
 import com.cvbank.repository.FolderRepository;
 import com.cvbank.repository.ProfileRepository;
 import com.cvbank.response.Response;
@@ -36,6 +37,9 @@ public class FoldersController {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private CVRepository CVRepository;
 
     @GetMapping("/folders/cv")
     public ResponseEntity getAllFoldersAndCVs(HttpServletRequest request) {
@@ -124,7 +128,6 @@ public class FoldersController {
     }
 
 
-
     @PutMapping("/folders/{id}")
     @Transactional
     public ResponseEntity<?> updateFolder(@RequestBody Folder folder, @PathVariable Long id) {
@@ -178,7 +181,7 @@ public class FoldersController {
     }
 
 
-   /* @PostMapping("/folders/{id}/cv/{cvId}")
+    @PostMapping("/folders/{id}/cv/{cvId}")
     @Transactional
     public ResponseEntity<?> addCvToFolder(@RequestBody Folder folder, @PathVariable Long id, @PathVariable Long cvId) {
 
@@ -191,18 +194,32 @@ public class FoldersController {
             Optional<Folder> tempFolder = folderRepository.findById(id);
 
             if (!tempFolder.isPresent()) {
-                resp = new ResponseError(2, Folder.class.getSimpleName() + " id not found - " + folder.getId());
+                resp = new ResponseError(2, Folder.class.getSimpleName() + " id not found - " + id);
                 return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
             }
+
+            Optional<CV> tempCV = CVRepository.findById(cvId);
+
+            if (!tempCV.isPresent()) {
+                resp = new ResponseError(2, CV.class.getSimpleName() + " id not found - " + cvId);
+                return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+            }
+
+            CV cv = new CV();
+            cv.setId(cvId);
+            CVRepository.save(cv);
+//folder.
+            folderRepository.save(folder);
+            //folder.setCv();
 //tempFolder.
             //List<CV> cv = folder.getCv();
             //cv.add()
-            for (CV cvInFolder : cv) {
+           /* for (CV cvInFolder : cv) {
                 cvInFolder.setCv(folder);
                 cvActivityRepository.save(cvAct);
             }
 
-           // String username = auth.getName();
+            // String username = auth.getName();
             //Profile profile = profileRepository.findByUsername(username);
 
             Folder newFolder = new Folder();
@@ -211,13 +228,13 @@ public class FoldersController {
             newFolder = folder;
 
             folderRepository.save(newFolder);
-
-            Optional<Folder> folderResponse = folderRepository.findById(newFolder.getId());
+*/
+            Optional<Folder> folderResponse = folderRepository.findById(folder.getId());
             resp = new ResponseSuccessObject(folderResponse.get());
         } else {
             resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [POST] /api/folders.");
         }
         return new ResponseEntity(resp, HttpStatus.CREATED);
-    }*/
+    }
 
 }

@@ -25,7 +25,7 @@ public class CVRestController {
     private ProfileRepository profileRepository;
 
     @Autowired
-    private com.cvbank.repository.CVRepository CVRepository;
+    private CVRepository CVRepository;
 
     @Autowired
     private CVactivityRepository cvActivityRepository;

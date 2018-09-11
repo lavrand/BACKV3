@@ -222,3 +222,180 @@ Method **GET**
 ```
 
 ***
+
+### GET Folders (return only folders without cv)
+Method **GET**
+
+<http://localhost:8080/api/folders>
+
+```json
+[
+	{
+		"id": 1,
+		"nameFolder": "CV's Junior C#",
+		"cv": null
+	},
+	{
+		"id": 2,
+		"nameFolder": "CV's Middle Javascript",
+		"cv": null
+	},
+	....
+	
+]
+
+***
+
+### GET Folders (return all folders and all cv)
+Method **GET**
+
+<http://localhost:8080/api/folders/cv>
+
+```json
+[
+        {
+            "id": 1,
+            "nameFolder": "CV's Junior C#",
+            "cv": [
+                {
+                    "id": 4,
+                    "firstName": "Liam",
+                    "lastName": "Smith",
+                    "summary": "I'm mega coder",
+                    "about": "I'm best of the best",
+                    "email": "John.Lenin@bigmail.com",
+                    "phone": "+972 73 243 4222",
+                    "residence": "",
+                    "birthday": "1992-02-29",
+                    "linkedin": "",
+                    "position_preference": null,
+                    "github": "",
+                    "recommendations": "",
+                    "title": "",
+                    "activated": true,
+                    "views": 0,
+                    "portfolio": "",
+                    "preferencedArea": "",
+                    "salaryFromPreference": 300,
+                    "salaryTillPreference": 1000,
+                    "cvActivity": [],
+                    "education": [],
+                    "template": null,
+                    "languages": [],
+                    "skills": []
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "nameFolder": "CV's Middle Javascript",
+            "cv": [
+                {
+                    "id": 2,
+                    "firstName": "Joe",
+                    "lastName": "Rodriguez",
+                    "summary": "I'm mega coder",
+                    "about": "I'm best of the best",
+                    "email": "Rodriguez@bigmail.com",
+                    "phone": "+972 73 243 4222",
+                    "residence": "",
+                    "birthday": "1986-05-21",
+                    "linkedin": "",
+                    "position_preference": null,
+                    "github": "",
+                    "recommendations": "",
+                    "title": "",
+                    "activated": true,
+                    "views": 0,
+                    "portfolio": "",
+                    "preferencedArea": "",
+                    "salaryFromPreference": 300,
+                    "salaryTillPreference": 1000,
+                    "cvActivity": [],
+                    "education": [],
+                    "template": null,
+                    "languages": [],
+                    "skills": []
+                }
+            ]
+        }
+    ]
+
+***
+
+### Add Folders (return new folder object)
+Method **POST**
+
+<http://localhost:8080/api/folders>
+
+```json
+
+	{
+		"nameFolder": "CV's Middle Java"        
+	}
+
+
+***
+### Change folder name
+Method **PUT**
+
+<http://localhost:8080/api/folders/{id}>
+
+```json
+
+	{
+		"nameFolder": "CV's Senior Java"         
+	}
+
+
+***
+### Delete folder
+Method **DELETE**
+
+<http://localhost:8080/api/folders/{id}>
+
+***
+
+### GET Folder by id (return folder with cv)
+Method **GET**
+
+<http://localhost:8080/api/folders/{id}/cv>
+
+```json
+
+	{
+		"id": 1,
+		"nameFolder": "CV's Junior C#",
+		"cv": [
+			{
+				"id": 4,
+				"firstName": "Liam",
+				"lastName": "Smith",
+				"summary": "I'm mega coder",
+				"about": "I'm best of the best",
+				"email": "John.Lenin@bigmail.com",
+				"phone": "+972 73 243 4222",
+				"residence": "",
+				"birthday": "1992-02-29",
+				"linkedin": "",
+				"position_preference": null,
+				"github": "",
+				"recommendations": "",
+				"title": "",
+				"activated": true,
+				"views": 0,
+				"portfolio": "",
+				"preferencedArea": "",
+				"salaryFromPreference": 300,
+				"salaryTillPreference": 1000,
+				"cvActivity": [],
+				"education": [],
+				"template": null,
+				"languages": [],
+				"skills": []
+			}
+		]
+	}
+
+***
+

@@ -240,9 +240,11 @@ Method **GET**
 		"nameFolder": "CV's Middle Javascript",
 		"cv": null
 	},
-	....
+	...
 	
 ]
+
+```
 
 ***
 
@@ -321,6 +323,7 @@ Method **GET**
         }
     ]
 
+```
 ***
 
 ### Add Folders (return new folder object)
@@ -334,7 +337,7 @@ Method **POST**
 		"nameFolder": "CV's Middle Java"        
 	}
 
-
+```
 ***
 ### Change folder name
 Method **PUT**
@@ -347,7 +350,7 @@ Method **PUT**
 		"nameFolder": "CV's Senior Java"         
 	}
 
-
+```
 ***
 ### Delete folder
 Method **DELETE**
@@ -396,6 +399,8 @@ Method **GET**
 			}
 		]
 	}
+
+```
 
 ***
 

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,5 +28,15 @@ public class Folder {
 
     @JsonIgnore
     private Long profileId;
+
+    public void addCV(CV theCV) {
+        if (cv == null) {
+            cv = new ArrayList<>();
+        }
+
+        cv.add(theCV);
+    }
+
+
 
 }

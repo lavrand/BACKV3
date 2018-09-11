@@ -27,4 +27,7 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
             "where f.profileId = :profileId " +
             "order by f.id")*/
     Page<Folder> findById(Long l, Pageable pageable);
+
+
+    List<Folder> deleteCvById(Long cvId);
 }

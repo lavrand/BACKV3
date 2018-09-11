@@ -20,7 +20,7 @@ public class LanguagesController {
     private com.cvbank.repository.LanguagesRepository LanguagesRepository;
 
     @GetMapping("/languages")
-    public ResponseEntity getAllCV(HttpServletRequest request) {
+    public ResponseEntity getAllLanguages(HttpServletRequest request) {
 
         List<Languages> language_list = LanguagesRepository.findAll();
 

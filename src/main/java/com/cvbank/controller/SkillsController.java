@@ -20,7 +20,7 @@ public class SkillsController {
     private com.cvbank.repository.SkillsRepository SkillsRepository;
 
     @GetMapping("/skills")
-    public ResponseEntity getAllCV(HttpServletRequest request) {
+    public ResponseEntity getAllSkills(HttpServletRequest request) {
 
         List<Skills> skill_list = SkillsRepository.findAll();
 

@@ -173,3 +173,52 @@ Method **Delete**
 Method **Delete**
 
 <http://localhost:8080/api/profiles/>
+
+
+***
+
+### GET Skills directory
+Method **GET**
+
+<http://localhost:8080/api/skills/>
+
+```json
+
+[
+        {
+            "id": 1,
+            "nameSkill": "Java"
+        },
+        {
+            "id": 2,
+            "nameSkill": "PHP"
+        },
+        ...
+    ]
+
+```
+
+***
+
+### GET Languages directory
+Method **GET**
+
+<http://localhost:8080/api/languages/>
+
+```json
+
+[
+        {
+            "id": 2,
+            "nameLang": "English"
+        },
+        {
+            "id": 4,
+            "nameLang": "France"
+        },
+        ...
+    ]
+
+```
+
+***

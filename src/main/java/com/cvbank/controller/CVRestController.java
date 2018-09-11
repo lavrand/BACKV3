@@ -21,7 +21,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class CVRestController {
 
-
     @Autowired
     private ProfileRepository profileRepository;
 
@@ -158,6 +157,7 @@ public class CVRestController {
 
         List<CVactivity> cvActivity = cv.getCvActivity();
         for (CVactivity cvAct : cvActivity) {
+            cvAct.setCv(cv);
             cvActivityRepository.save(cvAct);
         }
 

@@ -27,13 +27,13 @@ public class CVactivity {
 	private String description;
 
 	@Column(name = "year_start")
-	private int yearStart;
+	private Integer yearStart;
 
 	@Column(name = "year_end")
-	private int yearEnd;
+	private Integer yearEnd;
 
 	@Column(name = "back_front")
-	private int backFront;
+	private Integer backFront;
 
 	@Column(name = "company", length = 255)
 	private String company;

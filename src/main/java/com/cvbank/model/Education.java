@@ -15,7 +15,7 @@ public class Education {
     private Long id;
     private String institution;
     private String degree;
-    private int yearEnd;
+    private Integer yearEnd;
     private String location;
     private String note;
 

@@ -42,10 +42,10 @@ public class CV {
 	private String preferencedArea;
 
   	@Column(name = "salary_from_preference")
-	private int salaryFromPreference;
+	private Integer salaryFromPreference;
 
     @Column(name = "salary_till_preference")
-	private int salaryTillPreference;
+	private Integer salaryTillPreference;
 
     //@JsonBackReference
     @OneToMany(mappedBy="cv")

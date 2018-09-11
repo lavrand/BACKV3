@@ -4,10 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -23,7 +26,8 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.cvbank"))
                 .paths(regex("/api.*"))
                 .build()
-                .apiInfo(metaInfo());
+                .apiInfo(metaInfo())
+                .securitySchemes(Collections.singletonList(apiKey()));
     }
 
     private ApiInfo metaInfo() {
@@ -40,5 +44,10 @@ public class SwaggerConfig {
         );
 
         return apiInfo;
+    }
+
+
+    private ApiKey apiKey() {
+        return new ApiKey("Authorization", "Bearer", "header");
     }
 }

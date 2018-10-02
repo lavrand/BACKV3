@@ -1,5 +1,6 @@
 package com.cvbank.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class Education {
     //@JsonManagedReference
     @ManyToOne
     @JoinColumn(name="cv_id")
+    //@JsonBackReference
     private CV cv;
 }

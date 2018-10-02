@@ -1,12 +1,14 @@
 package com.cvbank.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -53,6 +55,8 @@ public class CV {
 
     //@JsonBackReference
     @OneToMany(mappedBy="cv")
+   // @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="cv")
+   // @JsonManagedReference
     private List<Education> education;
 
     @ManyToOne

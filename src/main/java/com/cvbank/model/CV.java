@@ -10,6 +10,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -54,8 +56,8 @@ public class CV {
     private List<CVactivity> cvActivity;
 
     //@JsonBackReference
-    @OneToMany(mappedBy="cv")
-   // @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="cv")
+    //@OneToMany(cascade=CascadeType.ALL, mappedBy="cv")
+    @OneToMany(cascade=ALL, mappedBy="cv", orphanRemoval=true)
    // @JsonManagedReference
     private List<Education> education;
 

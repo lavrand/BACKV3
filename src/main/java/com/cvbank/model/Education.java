@@ -23,7 +23,7 @@ public class Education {
     @JsonIgnore
     //@JsonManagedReference
     @ManyToOne
-    @JoinColumn(name="cv_id")
-    //@JsonBackReference
+    //@JoinColumn(name="cv_id")
+    @JoinColumn(name="cv_id", nullable=false)
     private CV cv;
 }

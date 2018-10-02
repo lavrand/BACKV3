@@ -79,7 +79,6 @@ public class CVRestController {
 
         Response resp;
 
-
         if (roles.get(0).toString().equals(Profile.Type.CANDIDATE.name())) {
 
             System.out.println(profileRepository.findByUsername(request.getUserPrincipal().getName()));
@@ -114,19 +113,16 @@ public class CVRestController {
         }
 
         List<Education> education = cv.getEducation();
-        System.out.println("1");
         for (Education educ : education) {
-            educ.setId(null);
+//            educ.setId(null);
             educ.setCv(cv);
-            System.out.println("2");
             cvEducationRepository.save(educ);
-            System.out.println("3");
         }
-        System.out.println("4");
+
         Template template = cv.getTemplate();
         template.setId(null);
         templateRepository.save(template);
-        System.out.println("5");
+
 /*
         List<Languages> language = cv.getLanguages();
         for (Languages lang : language) {

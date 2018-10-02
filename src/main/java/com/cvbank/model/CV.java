@@ -52,13 +52,12 @@ public class CV {
 	private Integer salaryTillPreference;
 
     //@JsonBackReference
-    @OneToMany(mappedBy="cv")
+    //@OneToMany(mappedBy="cv")
+    @OneToMany(cascade=ALL, mappedBy="cv", orphanRemoval=true)
     private List<CVactivity> cvActivity;
 
-    //@JsonBackReference
     //@OneToMany(cascade=CascadeType.ALL, mappedBy="cv")
     @OneToMany(cascade=ALL, mappedBy="cv", orphanRemoval=true)
-   // @JsonManagedReference
     private List<Education> education;
 
     @ManyToOne

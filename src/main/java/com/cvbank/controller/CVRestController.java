@@ -107,7 +107,7 @@ public class CVRestController {
 
         List<CVactivity> cvActivity = cv.getCvActivity();
         for (CVactivity cvAct : cvActivity) {
-            cvAct.setId(null);
+            //cvAct.setId(null);
             cvAct.setCv(cv);
             cvActivityRepository.save(cvAct);
         }
@@ -139,7 +139,6 @@ public class CVRestController {
         Optional<CV> cvResponse = cVRepository.findById(newCv.getId());
         return new ResponseEntity(new ResponseSuccessObject(cvResponse.get()), HttpStatus.CREATED);
     }
-
 
 
     @GetMapping("/cv/{id}")
@@ -183,8 +182,8 @@ public class CVRestController {
             educ.setCv(cv);
             cvEducationRepository.save(educ);
         }
-       // Template template = cv.getTemplate();
-       // templateRepository.save(template);
+        // Template template = cv.getTemplate();
+        // templateRepository.save(template);
 
         Optional<CV> cvResponse = cVRepository.findById(cv.getId());
         return new ResponseEntity(new ResponseSuccessObject(cvResponse.get()), HttpStatus.CREATED);

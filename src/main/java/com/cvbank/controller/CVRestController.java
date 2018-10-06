@@ -97,14 +97,12 @@ public class CVRestController {
 
         List<CVactivity> cvActivity = cv.getCvActivity();
         for (CVactivity cvAct : cvActivity) {
-            //cvAct.setId(null);
             cvAct.setCv(cv);
             cvActivityRepository.save(cvAct);
         }
 
         List<Education> education = cv.getEducation();
         for (Education educ : education) {
-//            educ.setId(null);
             educ.setCv(cv);
             cvEducationRepository.save(educ);
         }
@@ -112,19 +110,6 @@ public class CVRestController {
         Template template = cv.getTemplate();
         template.setId(null);
         templateRepository.save(template);
-
-/*
-        List<Languages> language = cv.getLanguages();
-        for (Languages lang : language) {
-            lang.setId(null);
-            languagesRepository.save(lang);
-        }
-
-        List<Skills> skills = cv.getSkills();
-        for (Skills skill : skills) {
-            skill.setId(null);
-            skillsRepository.save(skill);
-        }*/
 
         Optional<CV> cvResponse = cVRepository.findById(newCv.getId());
         return new ResponseEntity(new ResponseSuccessObject(cvResponse.get()), HttpStatus.CREATED);

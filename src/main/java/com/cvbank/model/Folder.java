@@ -20,29 +20,12 @@ public class Folder {
 
     private String nameFolder;
 
-    /*@ManyToMany
-    @JoinTable(
-            name="folder_cv",
-            joinColumns=@JoinColumn(name="folder_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"))
-    private Set<CV> cv;*/
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "folder_cv", joinColumns = @JoinColumn(name = "folder_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "cv_id", referencedColumnName = "id"))
-    public Set<CV> cv;
+    public List<CV> cv;
 
     @JsonIgnore
     private Long profileId;
-
-  /*  public void addCV(CV theCV) {
-        if (cv == null) {
-            cv = new ArrayList<>();
-        }
-
-        cv.add(theCV);
-    }*/
-
-
 
 }

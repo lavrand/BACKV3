@@ -11,6 +11,7 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
+
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

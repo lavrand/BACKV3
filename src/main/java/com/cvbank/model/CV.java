@@ -69,7 +69,7 @@ public class CV {
             name="cv_lang",
             joinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"),
             inverseJoinColumns=@JoinColumn(name="lang_id", referencedColumnName="id"))
-    private List<Languages> languages;
+    private List<Language> languages;
 
     //@JsonProperty("cvSkill")
     @ManyToMany
@@ -77,7 +77,7 @@ public class CV {
             name="cv_skill",
             joinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"),
             inverseJoinColumns=@JoinColumn(name="skill_id", referencedColumnName="id"))
-    private List<Skills> skills;
+    private List<Skill> skills;
 }
 
 

@@ -1,6 +1,6 @@
 package com.cvbank.controller;
 
-import com.cvbank.model.Languages;
+import com.cvbank.model.Language;
 import com.cvbank.response.ResponseSuccessList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,15 +14,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class LanguagesController {
+public class LanguageController {
 
     @Autowired
-    private com.cvbank.repository.LanguagesRepository LanguagesRepository;
+    private com.cvbank.repository.LanguageRepository LanguageRepository;
 
     @GetMapping("/languages")
     public ResponseEntity getAllLanguages(HttpServletRequest request) {
 
-        List<Languages> language_list = LanguagesRepository.findAll();
+        List<Language> language_list = LanguageRepository.findAll();
 
         return new ResponseEntity<>(new ResponseSuccessList(language_list), HttpStatus.OK);
     }

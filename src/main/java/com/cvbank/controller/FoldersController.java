@@ -39,27 +39,16 @@ public class FoldersController {
     private ProfileRepository profileRepository;
 
     @Autowired
-    private CVRepository CVRepository;
+    private CVRepository cVRepository;
 
-    @ApiOperation(
-            value = "Get total points for all users",
-            notes = "This method returns total points for all users"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Returns total points for all users"),
-            @ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Bad request"),
-            @ApiResponse(code = HttpURLConnection.HTTP_BAD_METHOD, message = "Bad method")
-    })
     @GetMapping("/folders/cv")
     public ResponseEntity getAllFoldersAndCVs(HttpServletRequest request) {
 
         List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Response resp;
         if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
-
             Long profileId = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
             resp = new ResponseSuccessList(folderRepository.findFolderByProfileId(profileId));
-
         } else {
             resp = new ResponseError(4, "ONLY" + Profile.Type.COMPANY.name() + " can access [GET] /api/folders/cv");
         }
@@ -73,9 +62,7 @@ public class FoldersController {
         List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Response resp;
         if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
-
             Long profileId = profileRepository.findByUsername(request.getUserPrincipal().getName()).getId();
-
             List<Folder> folderList = folderRepository.findFolderByProfileId(profileId);
             for (Folder folder : folderList) {
                 folder.setCv(null);
@@ -93,9 +80,7 @@ public class FoldersController {
         List roles = (List) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Response resp;
         if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
-
             Optional<Folder> folder = folderRepository.findById(id);
-
             if (!folder.isPresent()) {
                 resp = new ResponseError(1, Folder.class.getSimpleName() + " id not found - " + id);
                 return new ResponseEntity<>(resp, HttpStatus.OK);
@@ -112,12 +97,9 @@ public class FoldersController {
     @Transactional
     public ResponseEntity<?> createFolders(@RequestBody Folder folder) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         List roles = (List) auth.getAuthorities();
         Response resp;
         if (roles.get(0).toString().equals(Profile.Type.COMPANY.name())) {
-
-
             String username = auth.getName();
             Profile profile = profileRepository.findByUsername(username);
 
@@ -207,7 +189,7 @@ public class FoldersController {
                 return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
             }
 
-            Optional<CV> tempCV = CVRepository.findById(cvId);
+            Optional<CV> tempCV = cVRepository.findById(cvId);
 
             if (!tempCV.isPresent()) {
                 resp = new ResponseError(2, CV.class.getSimpleName() + " id not found - " + cvId);
@@ -216,7 +198,7 @@ public class FoldersController {
             System.out.println("add cv===========================================================");
             System.out.println();
 
-            folder.addCV(tempCV.get());
+//            folder.addCV(tempCV.get());
 
             folderRepository.save(folder);
             //folder.setCv();
@@ -242,7 +224,7 @@ public class FoldersController {
                 resp = new ResponseError(1, Profile.class.getSimpleName() + " id not found - " + id);
             }
 
-            Optional<CV> tempCV = CVRepository.findById(cvId);
+            Optional<CV> tempCV = cVRepository.findById(cvId);
 
             if (!tempCV.isPresent()) {
                 resp = new ResponseError(2, CV.class.getSimpleName() + " id not found - " + cvId);

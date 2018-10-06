@@ -8,9 +8,7 @@ import com.cvbank.model.Template;
 import com.cvbank.repository.CVEducationRepository;
 import com.cvbank.repository.CVRepository;
 import com.cvbank.repository.CVactivityRepository;
-import com.cvbank.repository.LanguagesRepository;
 import com.cvbank.repository.ProfileRepository;
-import com.cvbank.repository.SkillsRepository;
 import com.cvbank.repository.TemplateRepository;
 import com.cvbank.response.Response;
 import com.cvbank.response.ResponseError;
@@ -28,10 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -51,12 +47,6 @@ public class CVRestController {
 
     @Autowired
     private TemplateRepository templateRepository;
-
-    @Autowired
-    private LanguagesRepository languagesRepository;
-
-    @Autowired
-    private SkillsRepository skillsRepository;
 
     public static <T> List<T> toList(Optional<T> option) {
         if (option.isPresent())

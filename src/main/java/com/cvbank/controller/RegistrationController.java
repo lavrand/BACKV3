@@ -62,10 +62,10 @@ public class RegistrationController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody Profile profile) {
-        if (profileRepository.existsByUsername(profile.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
-        }
+//        if (profileRepository.existsByUsername(profile.getUsername())) {
+//            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
+//                    HttpStatus.BAD_REQUEST);
+//        }
 
         if (profileRepository.existsByEmail(profile.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),

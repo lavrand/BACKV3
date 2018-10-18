@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Education {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String institution;
     private String degree;
@@ -20,8 +20,7 @@ public class Education {
     private String note;
 
     @JsonIgnore
-    //@JsonManagedReference
     @ManyToOne
-    @JoinColumn(name="cv_id")
+    @JoinColumn(name = "cv_id", nullable = false)
     private CV cv;
 }

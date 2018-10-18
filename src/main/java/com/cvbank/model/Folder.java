@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,24 +20,12 @@ public class Folder {
 
     private String nameFolder;
 
-    @ManyToMany
-    @JoinTable(
-            name="folder_cv",
-            joinColumns=@JoinColumn(name="folder_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"))
-    private List<CV> cv;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "folder_cv", joinColumns = @JoinColumn(name = "folder_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "cv_id", referencedColumnName = "id"))
+    public List<CV> cv;
 
     @JsonIgnore
     private Long profileId;
-
-    public void addCV(CV theCV) {
-        if (cv == null) {
-            cv = new ArrayList<>();
-        }
-
-        cv.add(theCV);
-    }
-
-
 
 }

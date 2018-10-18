@@ -1,12 +1,16 @@
 package com.cvbank.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Data
@@ -48,11 +52,12 @@ public class CV {
 	private Integer salaryTillPreference;
 
     //@JsonBackReference
-    @OneToMany(mappedBy="cv")
+    //@OneToMany(mappedBy="cv")
+    @OneToMany(cascade=ALL, mappedBy="cv", orphanRemoval=true)
     private List<CVactivity> cvActivity;
 
-    //@JsonBackReference
-    @OneToMany(mappedBy="cv")
+    //@OneToMany(cascade=CascadeType.ALL, mappedBy="cv")
+    @OneToMany(cascade=ALL, mappedBy="cv", orphanRemoval=true)
     private List<Education> education;
 
     @ManyToOne
@@ -64,7 +69,7 @@ public class CV {
             name="cv_lang",
             joinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"),
             inverseJoinColumns=@JoinColumn(name="lang_id", referencedColumnName="id"))
-    private List<Languages> languages;
+    private List<Language> languages;
 
     //@JsonProperty("cvSkill")
     @ManyToMany
@@ -72,7 +77,7 @@ public class CV {
             name="cv_skill",
             joinColumns=@JoinColumn(name="cv_id", referencedColumnName="id"),
             inverseJoinColumns=@JoinColumn(name="skill_id", referencedColumnName="id"))
-    private List<Skills> skills;
+    private List<Skill> skills;
 }
 
 

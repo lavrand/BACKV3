@@ -1,6 +1,6 @@
 package com.cvbank.controller;
 
-import com.cvbank.model.Skills;
+import com.cvbank.model.Skill;
 import com.cvbank.response.ResponseSuccessList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +17,12 @@ import java.util.List;
 public class SkillsController {
 
     @Autowired
-    private com.cvbank.repository.SkillsRepository SkillsRepository;
+    private com.cvbank.repository.SkillRepository SkillRepository;
 
     @GetMapping("/skills")
-    public ResponseEntity getAllCV(HttpServletRequest request) {
+    public ResponseEntity getAllSkills(HttpServletRequest request) {
 
-        List<Skills> skill_list = SkillsRepository.findAll();
+        List<Skill> skill_list = SkillRepository.findAll();
 
         return new ResponseEntity<>(new ResponseSuccessList(skill_list), HttpStatus.OK);
     }

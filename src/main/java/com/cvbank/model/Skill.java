@@ -11,9 +11,16 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
-public class Languages {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nameLang;
+public class Skill {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	private String nameSkill;
+
 }
+
+
+
+
+

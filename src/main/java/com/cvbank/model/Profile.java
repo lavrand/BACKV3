@@ -38,7 +38,7 @@ public class Profile {
     @Column(name = "Id", nullable = false)
     private Long id;
 
-    @NotBlank
+//    @NotBlank
     @Size(max = 40)
     private String username;
 
